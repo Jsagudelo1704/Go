@@ -3,8 +3,9 @@ package main
 import (
 	"encoding/json"
 	"io/ioutil"
-	"mutant/mutant"
 	"net/http"
+
+	"github.com/Jsagudelo1704/Go/mutant"
 )
 
 type Cadenas struct {
