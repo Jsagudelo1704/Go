@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"io/ioutil"
-	"mutant"
+	"mutant/mutant"
 	"net/http"
 )
 
@@ -29,14 +29,14 @@ func mutantHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Validar si las cadenas ingresadas son validas
-		retorno := mutant.IsDnaValid(newDna.Dna)
+		retorno, msjretorno := mutant.IsDnaValid(newDna.Dna)
 		if !retorno {
 			w.WriteHeader(http.StatusBadRequest)
-			w.Write([]byte("Cadena Inváilda"))
+			w.Write([]byte(msjretorno))
 			return
 		}
 
-		//Verificasr si el dna ingresado es mutante
+		//Verificar si el dna ingresado es mutante
 		retorno = mutant.Ismutant(newDna.Dna)
 		if !retorno {
 			w.WriteHeader(http.StatusForbidden)
