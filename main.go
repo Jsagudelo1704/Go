@@ -20,12 +20,14 @@ func mutantHandler(w http.ResponseWriter, r *http.Request) {
 		body, err := ioutil.ReadAll(r.Body)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte("Error al leer la entrada"))
 			return
 		}
 
 		err = json.Unmarshal(body, &newDna)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte("Error al convertir la entrada"))
 			return
 		}
 
