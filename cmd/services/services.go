@@ -1,18 +1,23 @@
-package main
+package services
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 
 	"github.com/Jsagudelo1704/Go/pkg/mutant"
 )
 
+const rutaMutant = "mutant/"
+
+//const rutaStats = "stats"
+
 type Cadenas struct {
 	Dna []string `json:"dna"`
 }
 
-func mutantHandler(w http.ResponseWriter, r *http.Request) {
+func handleMutant(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 
 	case http.MethodPost:
@@ -58,8 +63,10 @@ func mutantHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func main() {
-
-	http.HandleFunc("/mutant", mutantHandler)
-	http.ListenAndServe(":5000", nil)
+// SetupRoutes :
+func SetupRoutes(rutabase string) {
+	mutantHandler := http.HandlerFunc(handleMutant)
+	//statsHandler := http.HandlerFunc(handleProduct)
+	http.Handle(fmt.Sprintf("%s/%s", rutabase, rutaMutant), mutantHandler)
+	//http.Handle(fmt.Sprintf("%s/%s", rutabase, rutaStats), cors.Middleware(productHandler))
 }

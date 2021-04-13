@@ -1,3 +1,3 @@
-module github.com/Jsagudelo1704/Go/pkg
+module github.com/Jsagudelo1704/Go
 
 go 1.16
