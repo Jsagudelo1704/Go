@@ -11,15 +11,17 @@ var matriz [][]string
 const CONSECUTIVOS = 4
 const NUMSEQ = 2
 
+//Funcion que retorna true cuando el areglo de entrada contiene >= NUMSEQ secuencias de CONSECUTIVOS caracteres iguales
+// Para esta funcion se crea una matriz con en scope global con el fin de que pueda ser accedidad en las diversas funciones de busqueda
 func Ismutant(dna []string) bool {
 	i = 0
 	j = 0
 	cont = 0
 	tam = len(dna)
-	//matriz = make([][]string, tam)
 
 	vector := make([]string, tam)
 
+	//Para llenar la matriz lo que se hace es anexar cada arreglo a la matriz. Cada arreglo contiene un vector de caracteres
 	for _, cadena := range dna {
 		cadena = strings.ToUpper(cadena)
 		busq1(cadena)
@@ -30,14 +32,10 @@ func Ismutant(dna []string) bool {
 		matriz = append(matriz, vector)
 	}
 
+	//En cada posición de la matriz realizamos las tres posibles busquedas para verificar las secuencias
+	//Luego de cada búsqueda se valida el contador, con el fin de no hacer operaciones innecesarias
 	for i = 0; i < tam; i++ {
 		for j = 0; j < tam; j++ {
-			/*
-				busq1(i, j, matriz)
-				if cont >= NUMSEQ {
-					return true
-				}
-			*/
 			busq2()
 			if cont >= NUMSEQ {
 				return true
@@ -55,18 +53,7 @@ func Ismutant(dna []string) bool {
 	return false
 }
 
-//Busqueda en direccion horizontal a la derecha
-//Se realiza esta busqueda cuando en la posicion que estamos hay longitud horizontal suficiente
-/*
-func busq1(i int, j int, matriz [][]string) {
-	if (j + CONSECUTIVOS) <= tam {
-		if matriz[i][j] == matriz[i][j+1] && matriz[i][j] == matriz[i][j+2] && matriz[i][j] == matriz[i][j+3] {
-			cont++
-		}
-	}
-}
-*/
-//Busqueda
+//Busqueda inicial con el fin de aprovechar que se está leyendo cada cadena del array
 func busq1(s string) {
 	cont = cont + strings.Count(s, "AAAA") + strings.Count(s, "CCCC") + strings.Count(s, "GGGG") + strings.Count(s, "TTTT")
 }

@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/Jsagudelo1704/Go/mutant"
+	"github.com/Jsagudelo1704/Go/pkg/mutant"
 )
 
 type Cadenas struct {
