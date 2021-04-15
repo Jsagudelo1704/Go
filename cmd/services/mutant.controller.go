@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/Jsagudelo1704/Go/pkg/mutant"
+	"github.com/Jsagudelo1704/Go/pkg/validate"
 	"github.com/Jsagudelo1704/Go/structs"
 )
 
@@ -18,7 +19,7 @@ func mutantController(w http.ResponseWriter, r *http.Request) (response http.Res
 	case http.MethodPost:
 
 		//Validacion del body del request
-		rta, newDna := validate.validateBody(r)
+		rta, newDna := validate.ValidateBody(r)
 		if rta.Msg != "" {
 			response.WriteHeader(http.StatusBadRequest)
 			j, err := json.Marshal(rta)

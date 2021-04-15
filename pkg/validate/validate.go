@@ -7,7 +7,7 @@ import (
 	"github.com/Jsagudelo1704/Go/structs"
 )
 
-func validateBody(req *http.Request) (rta structs.Respuesta, dna structs.Dna) {
+func ValidateBody(req *http.Request) (rta structs.Respuesta, dna structs.Dna) {
 
 	rta.Msg = ""
 	rta.Result = ""
