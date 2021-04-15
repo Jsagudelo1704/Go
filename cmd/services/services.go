@@ -13,19 +13,18 @@ const rutaMutant = "mutant/"
 
 //const rutaStats = "stats"
 
-type Cadenas struct {
-	Dna []string `json:"dna"`
-}
-
 func handleMutant(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 
 	case http.MethodPost:
+
+		//Validacion request pkg1
+
 		var newDna Cadenas
 		body, err := ioutil.ReadAll(r.Body)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
-			w.Write([]byte("Error al leer la entrada"))
+			w.Write([]byte("Error al leer el body del request"))
 			return
 		}
 
@@ -36,7 +35,7 @@ func handleMutant(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// Validar si las cadenas ingresadas son validas
+		// Varificar si las cadenas ingresadas son validas
 		retorno, msjretorno := mutant.IsDnaValid(newDna.Dna)
 		if !retorno {
 			w.WriteHeader(http.StatusBadRequest)
@@ -44,7 +43,7 @@ func handleMutant(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		//Verificar si el dna ingresado es mutante
+		//Verificar si el dna ingresado es de un mutante
 		retorno = mutant.Ismutant(newDna.Dna)
 		if !retorno {
 			w.WriteHeader(http.StatusForbidden)
@@ -66,7 +65,7 @@ func handleMutant(w http.ResponseWriter, r *http.Request) {
 // SetupRoutes :
 func SetupRoutes(rutabase string) {
 	mutantHandler := http.HandlerFunc(handleMutant)
-	//statsHandler := http.HandlerFunc(handleProduct)
+	//statsHandler := http.HandlerFunc(handleStats)
 	http.Handle(fmt.Sprintf("%s/%s", rutabase, rutaMutant), mutantHandler)
-	//http.Handle(fmt.Sprintf("%s/%s", rutabase, rutaStats), cors.Middleware(productHandler))
+	//http.Handle(fmt.Sprintf("%s/%s", rutabase, rutaStats), statsHandler)
 }
