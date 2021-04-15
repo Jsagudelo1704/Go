@@ -32,7 +32,7 @@ func mutantController(w http.ResponseWriter, r *http.Request) (response http.Res
 		}
 
 		// Varificar si las cadenas ingresadas son validas
-		rta = mutant.IsDnaValid(newDna.Dna)
+		rta.Msg, rta.Result = mutant.IsDnaValid(newDna.Dna)
 		if rta.Msg != "" {
 			response.WriteHeader(http.StatusBadRequest)
 			j, err := json.Marshal(rta)
