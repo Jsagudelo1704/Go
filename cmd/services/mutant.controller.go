@@ -12,34 +12,36 @@ import (
 
 var rta structs.Respuesta
 
-func mutantController(w http.ResponseWriter, r *http.Request) (response http.ResponseWriter) {
+func mutantController(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 
 	case http.MethodPost:
+		w.Header().Set("Content-Type", "application/json")
 
 		//Validacion del body del request
 		rta, newDna := validate.ValidateBody(r)
 		if rta.Msg != "" {
-			response.WriteHeader(http.StatusBadRequest)
+			w.WriteHeader(http.StatusBadRequest)
 			j, err := json.Marshal(rta)
 			if err != nil {
 				log.Fatal(err)
 			}
-			response.Write(j)
+			w.Write(j)
 
 			return
 		}
 
 		// Varificar si las cadenas ingresadas son validas
 		rta.Msg, rta.Result = mutant.IsDnaValid(newDna.Dna)
+
 		if rta.Msg != "" {
-			response.WriteHeader(http.StatusBadRequest)
+			w.WriteHeader(http.StatusBadRequest)
 			j, err := json.Marshal(rta)
 			if err != nil {
 				log.Fatal(err)
 			}
-			response.Write(j)
+			w.Write(j)
 
 			return
 		}
@@ -47,36 +49,38 @@ func mutantController(w http.ResponseWriter, r *http.Request) (response http.Res
 		//Verificar si el dna ingresado es de un mutante
 		retorno := mutant.Ismutant(newDna.Dna)
 		if !retorno {
-			response.WriteHeader(http.StatusForbidden)
+			w.WriteHeader(http.StatusForbidden)
 			rta.Msg = "Dna procesado"
 			rta.Result = "Humano"
 			j, err := json.Marshal(rta)
 			if err != nil {
 				log.Fatal(err)
 			}
-			response.Write(j)
+			w.Write(j)
 			return
 		}
 
-		response.WriteHeader(http.StatusOK)
+		w.WriteHeader(http.StatusOK)
 		rta.Msg = "Dna procesado"
 		rta.Result = "Mutante"
 		j, err := json.Marshal(rta)
 		if err != nil {
 			log.Fatal(err)
 		}
-		response.Write(j)
+		w.Write(j)
 		return
 
 	default:
-		response.WriteHeader(http.StatusMethodNotAllowed)
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusMethodNotAllowed)
 		rta.Msg = "Metodo no permitido"
 		rta.Result = "Petición Fallida"
 		j, err := json.Marshal(rta)
 		if err != nil {
 			log.Fatal(err)
 		}
-		response.Write(j)
+		w.Write(j)
 		return
 	}
+
 }
