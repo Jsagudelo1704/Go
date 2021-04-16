@@ -11,7 +11,6 @@ const rutaMutant = "mutant/"
 
 func handleMutant(w http.ResponseWriter, r *http.Request) {
 	mutantController(w, r)
-
 }
 
 // SetupRoutes :

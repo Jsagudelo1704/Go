@@ -1,5 +1,9 @@
 package services
 
+/*
+//Este componente se crea con el fin de manejar todo el flujo del servicio y desacoplar responsabilidades
+//Como buena practica de desarrollo se crea un controlador para cada servicio
+*/
 import (
 	"encoding/json"
 	"log"
@@ -12,6 +16,7 @@ import (
 
 var rta structs.Respuesta
 
+//Funcion principal del controlador para el flujo del servicio mutant\
 func mutantController(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {

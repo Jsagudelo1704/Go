@@ -1,5 +1,10 @@
 package structs
 
+/*
+// Este componente se encarga de agrupar las diferentes estructuras usadas en el proyecto.
+// Para realizar la inicialización de alguna estructura, este pkg debe ser importado
+*/
+
 //Estructura del objeto JSON que se recibe en el body del servicio mutant/
 type Dna struct {
 	Dna []string `json:"dna"`

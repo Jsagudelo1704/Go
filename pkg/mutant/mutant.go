@@ -1,5 +1,10 @@
 package mutant
 
+/*
+// Este pkg contiene las funciones correspondientes al metodo mutant\
+// Estan funciones de validacion para este contexto, así como las funciones propias del negocio
+*/
+
 import (
 	"regexp"
 	"strings"
@@ -11,8 +16,8 @@ var matriz [][]string
 const CONSECUTIVOS = 4
 const NUMSEQ = 2
 
-//Funcion que retorna true cuando el areglo de entrada contiene >= NUMSEQ secuencias de CONSECUTIVOS caracteres iguales
-// Para esta funcion se crea una matriz con en scope global con el fin de que pueda ser accedidad en las diversas funciones de busqueda
+//Funcion que retorna si el dna ingreado es mutante. Para esta validacion se buscan 2 (NUMSEQ) o más secuencias de 4 (CONSECUTIVOS) caracteres iguales.
+//Para esta funcion se crea una matriz con en scope global con el fin de que pueda ser accedida en las diversas funciones privadas de busqueda
 func Ismutant(dna []string) bool {
 	i = 0
 	j = 0
@@ -22,6 +27,7 @@ func Ismutant(dna []string) bool {
 	vector := make([]string, tam)
 
 	//Para llenar la matriz lo que se hace es anexar cada arreglo a la matriz. Cada arreglo contiene un vector de caracteres
+	//Para permitir retorno tempranos, se implementa la busqueda 1 que valida en primera instancia los cadenas ya recibidas.
 	for _, cadena := range dna {
 		cadena = strings.ToUpper(cadena)
 		busq1(cadena)
@@ -54,6 +60,7 @@ func Ismutant(dna []string) bool {
 }
 
 //Busqueda inicial con el fin de aprovechar que se está leyendo cada cadena del array
+//Un resultado mayor a 1 en esta busqueda permitira que el algoritmo termine de forma pronta y exitosa consumiendo así menos recursos de procesamiento
 func busq1(s string) {
 	cont = cont + strings.Count(s, "AAAA") + strings.Count(s, "CCCC") + strings.Count(s, "GGGG") + strings.Count(s, "TTTT")
 }
@@ -89,6 +96,7 @@ func busq4() {
 }
 
 //Aplicar validaciones generales a la cadena recibida para verificar que cumple con las condiciones
+//Estas se obtienen de la especificacion entregada
 func IsDnaValid(dna []string) (msg string, result string) {
 	//Validar que la cadena solo contenga los caracteres A,C,G,T
 	var regex_dna = regexp.MustCompile("^([ACGT]*)$")
