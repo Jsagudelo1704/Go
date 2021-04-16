@@ -89,24 +89,24 @@ func busq4() {
 }
 
 //Aplicar validaciones generales a la cadena recibida para verificar que cumple con las condiciones
-func IsDnaValid(dna []string) (ret bool, msj string) {
+func IsDnaValid(dna []string) (msg string, result string) {
 	//Validar que la cadena solo contenga los caracteres A,C,G,T
 	var regex_dna = regexp.MustCompile("^([ACGT]*)$")
 	tam = len(dna)
-	ret = true
-	msj = ""
+	result = ""
+	msg = ""
 
 	for _, cadena := range dna {
 		reg := regex_dna.FindStringSubmatch(strings.ToUpper(cadena))
 		if reg == nil {
-			ret = false
-			msj = "Caracter invalido en la cadena"
+			msg = "Caracter invalido en la cadena"
+			result = "Peticion fallida"
 			return
 		}
 		//Validar que la matriz sea simétrica
 		if len(cadena) != tam {
-			ret = false
-			msj = "Matriz no es simetrica"
+			msg = "Matriz no es simetrica"
+			result = "Peticion fallida"
 			return
 		}
 	}

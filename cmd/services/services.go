@@ -10,7 +10,6 @@ const rutaMutant = "mutant/"
 //const rutaStats = "stats"
 
 func handleMutant(w http.ResponseWriter, r *http.Request) {
-
 	w = mutantController(w, r)
 	return
 }
