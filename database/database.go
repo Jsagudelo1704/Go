@@ -4,19 +4,26 @@ import (
 	"context"
 	"log"
 
-	"github.com/Jsagudelo1704/Go/config"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func ConnectDB() (*mongo.Client, *mongo.Database, *mongo.Collection) {
-	conf := config.GetConfig()
-	connection := options.Client().ApplyURI(conf.Mongo.Server)
-	client, err := mongo.Connect(context.TODO(), connection)
+//Crear conexion a la BD en mongo. Se retorna el cliente para poderlo finalizar cuando termine la peticion
+//Se reotrna la coleccion para poder operar sobre ella
+func ConnectDB(ctx context.Context) (*mongo.Client, *mongo.Collection) {
+
+	//conf := config.GetConfig()
+	//connection := options.Client().ApplyURI(conf.Mongo.Server)
+	connection := options.Client().ApplyURI("mongodb://localhost:27017")
+	client, err := mongo.Connect(ctx, connection)
 	if err != nil {
 		log.Fatal(err)
 	}
-	db := client.Database(conf.Mongo.Database)
-	collec := db.Collection(conf.Mongo.Collection)
-	return client, db, collec
+
+	//db := client.Database(conf.Mongo.Database)
+	//collec := db.Collection(conf.Mongo.Collection)
+	db := client.Database("Mutant")
+	collec := db.Collection("dnaverified")
+
+	return client, collec
 }

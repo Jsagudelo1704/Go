@@ -1,9 +1,5 @@
 package structs
 
-import (
-	"go.mongodb.org/mongo-driver/bson/primitive"
-)
-
 /*
 // Este componente se encarga de agrupar las diferentes estructuras usadas en el proyecto.
 // Para realizar la inicialización de alguna estructura, este pkg debe ser importado
@@ -29,9 +25,8 @@ type Stats struct {
 
 //Estructura JSON para guardar en la BD
 type DnaBd struct {
-	ID     primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
-	Dna    []string           `json:"dna,omitempty" bson:"dna,omitempty"`
-	Result string             `json:"result,omitempty" bson:"result,omitempty"`
+	Dna    []string `json:"dna" bson:"dna"`
+	Result string   `json:"result" bson:"result"`
 }
 
 //Estructura para el archivo de configuracion de la BD
