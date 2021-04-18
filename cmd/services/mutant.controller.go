@@ -25,7 +25,7 @@ func mutantController(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 
 		//Validacion del body del request
-		rta, newDna := validate.ValidateBody(r)
+		rta, newDna := validate.ValidateBody(r.Body)
 		if rta.Msg != "" {
 			w.WriteHeader(http.StatusBadRequest)
 			j, err := json.Marshal(rta)

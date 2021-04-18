@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-var tam, cont, i, j int
+var tam, i, j int
 var matriz [][]string
 
 const CONSECUTIVOS = 4
@@ -21,7 +21,7 @@ const NUMSEQ = 2
 func Ismutant(dna []string) bool {
 	i = 0
 	j = 0
-	cont = 0
+	cont := 0
 	tam = len(dna)
 
 	vector := make([]string, tam)
@@ -30,7 +30,7 @@ func Ismutant(dna []string) bool {
 	//Para permitir retorno tempranos, se implementa la busqueda 1 que valida en primera instancia los cadenas ya recibidas.
 	for _, cadena := range dna {
 		cadena = strings.ToUpper(cadena)
-		busq1(cadena)
+		cont = cont + busq1(cadena)
 		if cont >= NUMSEQ {
 			return true
 		}
@@ -42,15 +42,15 @@ func Ismutant(dna []string) bool {
 	//Luego de cada búsqueda se valida el contador, con el fin de no hacer operaciones innecesarias
 	for i = 0; i < tam; i++ {
 		for j = 0; j < tam; j++ {
-			busq2()
+			cont = cont + busq2()
 			if cont >= NUMSEQ {
 				return true
 			}
-			busq3()
+			cont = cont + busq3()
 			if cont >= NUMSEQ {
 				return true
 			}
-			busq4()
+			cont = cont + busq4()
 			if cont >= NUMSEQ {
 				return true
 			}
@@ -61,38 +61,42 @@ func Ismutant(dna []string) bool {
 
 //Busqueda inicial con el fin de aprovechar que se está leyendo cada cadena del array
 //Un resultado mayor a 1 en esta busqueda permitira que el algoritmo termine de forma pronta y exitosa consumiendo así menos recursos de procesamiento
-func busq1(s string) {
-	cont = cont + strings.Count(s, "AAAA") + strings.Count(s, "CCCC") + strings.Count(s, "GGGG") + strings.Count(s, "TTTT")
+func busq1(s string) (count int) {
+	count = strings.Count(s, "AAAA") + strings.Count(s, "CCCC") + strings.Count(s, "GGGG") + strings.Count(s, "TTTT")
+	return count
 }
 
 //Busqueda en direccion vertical hacia abajo
 //Se realiza esta busqueda cuando en la posicion que estamos hay longitud vertical suficiente
-func busq2() {
+func busq2() (count int) {
 	if (i + CONSECUTIVOS) <= tam {
 		if matriz[i][j] == matriz[i+1][j] && matriz[i][j] == matriz[i+2][j] && matriz[i][j] == matriz[i+3][j] {
-			cont++
+			count++
 		}
 	}
+	return count
 }
 
 //Busqueda en direccion derecha y abajo
 //Se realiza esta busqueda cuando en la posicion que estamos hay longitud suficiente
-func busq3() {
+func busq3() (count int) {
 	if (i+CONSECUTIVOS) <= tam && (j+CONSECUTIVOS) <= tam {
 		if matriz[i][j] == matriz[i+1][j+1] && matriz[i][j] == matriz[i+2][j+2] && matriz[i][j] == matriz[i+3][j+3] {
-			cont++
+			count++
 		}
 	}
+	return count
 }
 
 //Busqueda en direccion derecha y arriba
 //Se realiza esta busqueda cuando en la posicion que estamos hay longitud suficiente
-func busq4() {
+func busq4() (count int) {
 	if (i-CONSECUTIVOS+1) >= 0 && (j+CONSECUTIVOS) <= tam {
 		if matriz[i][j] == matriz[i-1][j+1] && matriz[i][j] == matriz[i-2][j+2] && matriz[i][j] == matriz[i-3][j+3] {
-			cont++
+			count++
 		}
 	}
+	return count
 }
 
 //Aplicar validaciones generales a la cadena recibida para verificar que cumple con las condiciones

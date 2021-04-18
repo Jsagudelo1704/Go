@@ -13,8 +13,19 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
+var ctx context.Context
+var conf structs.MongoConfiguration
+
+func init() {
+	conf = structs.MongoConfiguration{
+		Server:     "mongodb://localhost:27017",
+		Database:   "Mutant",
+		Collection: "dnaverified",
+	}
+}
+
 //Insertar un nuevo documento en la collecion con la informacion de la cadena validada
-func InsertDna(dna []string, ismutant bool) {
+func InsertDna(dna []string, ismutant bool) error {
 
 	var document structs.DnaBd
 	document.Dna = dna
@@ -23,15 +34,16 @@ func InsertDna(dna []string, ismutant bool) {
 		document.Result = "Mutante"
 	}
 
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, _ = context.WithTimeout(context.Background(), 10*time.Second)
 
-	client, col := database.ConnectDB(ctx)
+	client, col := database.ConnectDB(ctx, conf)
 	_, err := col.InsertOne(ctx, document)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	defer client.Disconnect(ctx)
+	return err
 
 }
 
@@ -48,7 +60,7 @@ func GetStats() (rta structs.Respuesta, stats structs.Stats) {
 	}
 
 	//Se valida que el denominador de la operación no sea 0, en ese caso se deja el ratio igual a la cantidad de mutantes
-	if stats.CountMutant > 0 {
+	if stats.CountHuman > 0 {
 		stats.Ratio = (float32(stats.CountMutant) / float32(stats.CountHuman))
 	} else {
 		stats.Ratio = float32(stats.CountMutant)
@@ -60,8 +72,8 @@ func GetStats() (rta structs.Respuesta, stats structs.Stats) {
 //Obtener un documento especifico de la coleccion
 func GetDna(dna []string) string {
 	var document structs.DnaBd
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-	client, col := database.ConnectDB(ctx)
+	ctx, _ = context.WithTimeout(context.Background(), 10*time.Second)
+	client, col := database.ConnectDB(ctx, conf)
 	col.FindOne(ctx, bson.M{"dna": dna}).Decode(&document)
 
 	defer client.Disconnect(ctx)
@@ -70,8 +82,8 @@ func GetDna(dna []string) string {
 
 //funcion para obtener la cantidad de documentos que cumplen con el parametro de busqueda
 func getcount(s string) (int, bool) {
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-	client, col := database.ConnectDB(ctx)
+	ctx, _ = context.WithTimeout(context.Background(), 10*time.Second)
+	client, col := database.ConnectDB(ctx, conf)
 	count, err := col.CountDocuments(ctx, bson.M{"result": s})
 	if err != nil {
 		return 0, false
