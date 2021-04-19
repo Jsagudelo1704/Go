@@ -53,9 +53,9 @@ Teniendo en cuenta estos planteamientos y las definiciones, a continuacion se re
 
 Se crearon pruebas unitarias usando las librerias estandar de la herramienta. Estas se implementaron sobre los 3 paquetes que contienen las funciones principales
 de la aplicación.
-* Mutant -- [Coverage] (https://github.com/Jsagudelo1704/Go/docs/mutant_coverage.html)
-* Stats  -- [Coverage] (https://github.com/Jsagudelo1704/Go/docs/stats_coverage.html)
-* Validate --  [Coverage] (https://github.com/Jsagudelo1704/Go/docs/validate_coverage.html)
+* Mutant -- [Coverage](https://github.com/Jsagudelo1704/Go/blob/main/docs/mutant_coverage.html)
+* Stats  -- [Coverage](https://github.com/Jsagudelo1704/Go/blob/main/docs/stats_coverage.html)
+* Validate --  [Coverage](https://github.com/Jsagudelo1704/Go/blob/main/docs/validate_coverage.html)
 
 
 
@@ -63,7 +63,7 @@ de la aplicación.
 
 El despliegue de la aplicación se realizó en **Heroku**. La URL del servicion es:
 ```
-[URL - API] (https://mutantcha.herokuapp.com/)
+[URL - API](https://mutantcha.herokuapp.com/)
 ```
 
 ## Construido con 🛠️
@@ -85,4 +85,4 @@ Se usó Github como repositorio, este se conecta desde windows a traves de la he
 
 ## Autores ✒️
 
-* **Juan Sebastian Agudelo** - *Trabajo Completo* - [villanuevand]
+* **Juan Sebastian Agudelo** - *Trabajo Completo* 
