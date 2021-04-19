@@ -63,7 +63,7 @@ de la aplicación.
 
 El despliegue de la aplicación se realizó en **Heroku**. La URL del servicion es:
 ```
-[URL - API] (https://mutantcha.herokuapp.com/)
+[URL - API](https://mutantcha.herokuapp.com/)
 ```
 
 ## Construido con 🛠️
@@ -85,4 +85,4 @@ Se usó Github como repositorio, este se conecta desde windows a traves de la he
 
 ## Autores ✒️
 
-* **Juan Sebastian Agudelo** - *Trabajo Completo* - [villanuevand]
+* **Juan Sebastian Agudelo** - *Trabajo Completo* 
