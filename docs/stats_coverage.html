@@ -1,0 +1,196 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>stats: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">github.com/Jsagudelo1704/Go/pkg/stats/stats.go (83.8%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package stats
+
+/*
+// Este pkg contiene las funciones correspondientes al metodo stats\
+*/
+import (
+        "context"
+        "log"
+        "time"
+
+        "github.com/Jsagudelo1704/Go/database"
+        "github.com/Jsagudelo1704/Go/structs"
+        "go.mongodb.org/mongo-driver/bson"
+)
+
+var ctx context.Context
+var conf structs.MongoConfiguration
+
+func init() <span class="cov8" title="1">{
+        conf = structs.MongoConfiguration{
+                Server:     "mongodb://localhost:27017",
+                Database:   "Mutant",
+                Collection: "dnaverified",
+        }
+}</span>
+
+//Insertar un nuevo documento en la collecion con la informacion de la cadena validada
+func InsertDna(dna []string, ismutant bool) error <span class="cov8" title="1">{
+
+        var document structs.DnaBd
+        document.Dna = dna
+        document.Result = "Humano"
+        if ismutant </span><span class="cov8" title="1">{
+                document.Result = "Mutante"
+        }</span>
+
+        <span class="cov8" title="1">ctx, _ = context.WithTimeout(context.Background(), 10*time.Second)
+
+        client, col := database.ConnectDB(ctx, conf)
+        _, err := col.InsertOne(ctx, document)
+        if err != nil </span><span class="cov0" title="0">{
+                log.Fatal(err)
+        }</span>
+
+        <span class="cov8" title="1">defer client.Disconnect(ctx)
+        return err</span>
+
+}
+
+//Traer las estadisticas de la collecion dnaverified
+func GetStats() (rta structs.Respuesta, stats structs.Stats) <span class="cov8" title="1">{
+        var ret1, ret2 bool
+        stats.CountMutant, ret1 = getcount("Mutante")
+        stats.CountHuman, ret2 = getcount("Humano")
+
+        if !ret1 || !ret2 </span><span class="cov0" title="0">{
+                rta.Msg = "Error Interno con la BD"
+                rta.Result = "Peticion Fallida"
+                return
+        }</span>
+
+        //Se valida que el denominador de la operación no sea 0, en ese caso se deja el ratio igual a la cantidad de mutantes
+        <span class="cov8" title="1">if stats.CountHuman &gt; 0 </span><span class="cov8" title="1">{
+                stats.Ratio = (float32(stats.CountMutant) / float32(stats.CountHuman))
+        }</span> else<span class="cov0" title="0"> {
+                stats.Ratio = float32(stats.CountMutant)
+        }</span>
+
+        <span class="cov8" title="1">return</span>
+}
+
+//Obtener un documento especifico de la coleccion
+func GetDna(dna []string) string <span class="cov8" title="1">{
+        var document structs.DnaBd
+        ctx, _ = context.WithTimeout(context.Background(), 10*time.Second)
+        client, col := database.ConnectDB(ctx, conf)
+        col.FindOne(ctx, bson.M{"dna": dna}).Decode(&amp;document)
+
+        defer client.Disconnect(ctx)
+        return document.Result
+}</span>
+
+//funcion para obtener la cantidad de documentos que cumplen con el parametro de busqueda
+func getcount(s string) (int, bool) <span class="cov8" title="1">{
+        ctx, _ = context.WithTimeout(context.Background(), 10*time.Second)
+        client, col := database.ConnectDB(ctx, conf)
+        count, err := col.CountDocuments(ctx, bson.M{"result": s})
+        if err != nil </span><span class="cov0" title="0">{
+                return 0, false
+        }</span>
+        <span class="cov8" title="1">defer client.Disconnect(ctx)
+        return int(count), true</span>
+}
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>
