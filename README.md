@@ -31,7 +31,7 @@ realizaron planteamientos para las implementaciones no realizadas.
   _ya sea replicando los contenedores o servidores según el esquema de infraestructura presente._
 * _Debido a que este escalamiento es costoso, se plantea el uso de un servicio en la nube que nos permita escalasr de forma inmediata durante el pico y de_
   _esta forma solo pagar por el consumo generado._
-* _Acompañando el planteamiento previo, para el almacenamiento en la BD se plantea el uso de colas para almacenar las peticiones, esto debido a que en el enunciado_
+* _Acompañando al planteamiento previo, para el almacenamiento en la BD se plantea el uso de colas para mantener las peticiones sin saturar el servidor de BD, esto debido a que en el enunciado_
   _no se evidencia que esta creación sea parte de la operación crítica del ejercicio ya que es un servicio de consulta. Al tener una cola de peticiones a lka BD,_
   _estas se pueden tratar mediante reglas: 1. Definir 5 reintentos, uno cada 5 minutos. 2. Cuando la petición ya cumple los reintentos definidos se guarda en un repositorio._
   _3. Crear un proceso periodico para realizar un cargue masivo de las peticiones fallidas. 4. Si la petición vuelve a fallar se descarta completamente._
