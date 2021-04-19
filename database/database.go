@@ -15,14 +15,13 @@ func ConnectDB(ctx context.Context, conf structs.MongoConfiguration) (*mongo.Cli
 
 	//conf := config.GetConfig()
 	//connection := options.Client().ApplyURI(conf.Mongo.Server)
-	connection := options.Client().ApplyURI(conf.Server)
+	//connection := options.Client().ApplyURI(conf.Server)
+
+	connection := options.Client().ApplyURI("mongodb+srv://mongoadmin:Juanito_1704@cluster0.cxpm1.mongodb.net/test")
 	client, err := mongo.Connect(ctx, connection)
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	//db := client.Database(conf.Mongo.Database)
-	//collec := db.Collection(conf.Mongo.Collection)
 	db := client.Database(conf.Database)
 	collec := db.Collection(conf.Collection)
 
