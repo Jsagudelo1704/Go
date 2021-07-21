@@ -24,6 +24,21 @@ func TestIsmutant(t *testing.T) {
 			expectedResult: true,
 		},
 
+		"Deberia retornar - Mutante2": {
+			dna:            `{"dna":["ttttgA","CTGCat","aCaTGT","TAcAAc","CagCTA","cACTaA"]}`,
+			expectedResult: true,
+		},
+
+		"Deberia retornar - Mutante3": {
+			dna:            `{"dna":["tgttgA","CTGCat","aCaTGc","TAcAcc","CagCTA","cACTaA"]}`,
+			expectedResult: true,
+		},
+
+		"Deberia retornar - Mutante4": {
+			dna:            `{"dna":["tGttgA","tGGCat","tgaTGc","TgcAcc","CagCTA","cACTaA"]}`,
+			expectedResult: true,
+		},
+
 		"Deberia retornar - Humano 1": {
 			dna:            `{"dna":["tcttgA","CTGCat","aCaTGc","TAtAcc","CagCTA","cACTaA"]}`,
 			expectedResult: false,

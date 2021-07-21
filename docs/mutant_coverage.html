@@ -55,7 +55,7 @@
 			<div id="nav">
 				<select id="files">
 				
-				<option value="file0">github.com/Jsagudelo1704/Go/pkg/mutant/mutant.go (88.7%)</option>
+				<option value="file0">github.com/Jsagudelo1704/Go/pkg/mutant/mutant.go (100.0%)</option>
 				
 				</select>
 			</div>
@@ -79,10 +79,9 @@
 import (
         "regexp"
         "strings"
-)
 
-var tam, i, j int
-var matriz [][]string
+        "github.com/Jsagudelo1704/Go/structs"
+)
 
 const CONSECUTIVOS = 4
 const NUMSEQ = 2
@@ -90,12 +89,16 @@ const NUMSEQ = 2
 //Funcion que retorna si el dna ingreado es mutante. Para esta validacion se buscan 2 (NUMSEQ) o más secuencias de 4 (CONSECUTIVOS) caracteres iguales.
 //Para esta funcion se crea una matriz con en scope global con el fin de que pueda ser accedida en las diversas funciones privadas de busqueda
 func Ismutant(dna []string) bool <span class="cov8" title="1">{
-        i = 0
-        j = 0
-        cont := 0
-        tam = len(dna)
 
-        vector := make([]string, tam)
+        matrizData := structs.MatrizData{}
+
+        matrizData.Pos_i = 0
+        matrizData.Pos_j = 0
+        matrizData.Tamano = len(dna)
+
+        cont := 0
+
+        vector := make([]string, matrizData.Tamano)
 
         //Para llenar la matriz lo que se hace es anexar cada arreglo a la matriz. Cada arreglo contiene un vector de caracteres
         //Para permitir retorno tempranos, se implementa la busqueda 1 que valida en primera instancia los cadenas ya recibidas.
@@ -106,23 +109,23 @@ func Ismutant(dna []string) bool <span class="cov8" title="1">{
                         return true
                 }</span>
                 <span class="cov8" title="1">vector = strings.Split(cadena, "")
-                matriz = append(matriz, vector)</span>
+                matrizData.Matriz = append(matrizData.Matriz, vector)</span>
         }
 
         //En cada posición de la matriz realizamos las tres posibles busquedas para verificar las secuencias
         //Luego de cada búsqueda se valida el contador, con el fin de no hacer operaciones innecesarias
-        <span class="cov8" title="1">for i = 0; i &lt; tam; i++ </span><span class="cov8" title="1">{
-                for j = 0; j &lt; tam; j++ </span><span class="cov8" title="1">{
-                        cont = cont + busq2()
-                        if cont &gt;= NUMSEQ </span><span class="cov0" title="0">{
+        <span class="cov8" title="1">for matrizData.Pos_i = 0; matrizData.Pos_i &lt; matrizData.Tamano; matrizData.Pos_i++ </span><span class="cov8" title="1">{
+                for matrizData.Pos_j = 0; matrizData.Pos_j &lt; matrizData.Tamano; matrizData.Pos_j++ </span><span class="cov8" title="1">{
+                        cont = cont + busq2(matrizData)
+                        if cont &gt;= NUMSEQ </span><span class="cov8" title="1">{
                                 return true
                         }</span>
-                        <span class="cov8" title="1">cont = cont + busq3()
-                        if cont &gt;= NUMSEQ </span><span class="cov0" title="0">{
+                        <span class="cov8" title="1">cont = cont + busq3(matrizData)
+                        if cont &gt;= NUMSEQ </span><span class="cov8" title="1">{
                                 return true
                         }</span>
-                        <span class="cov8" title="1">cont = cont + busq4()
-                        if cont &gt;= NUMSEQ </span><span class="cov0" title="0">{
+                        <span class="cov8" title="1">cont = cont + busq4(matrizData)
+                        if cont &gt;= NUMSEQ </span><span class="cov8" title="1">{
                                 return true
                         }</span>
                 }
@@ -139,9 +142,11 @@ func busq1(s string) (count int) <span class="cov8" title="1">{
 
 //Busqueda en direccion vertical hacia abajo
 //Se realiza esta busqueda cuando en la posicion que estamos hay longitud vertical suficiente
-func busq2() (count int) <span class="cov8" title="1">{
-        if (i + CONSECUTIVOS) &lt;= tam </span><span class="cov8" title="1">{
-                if matriz[i][j] == matriz[i+1][j] &amp;&amp; matriz[i][j] == matriz[i+2][j] &amp;&amp; matriz[i][j] == matriz[i+3][j] </span><span class="cov0" title="0">{
+func busq2(matrizData structs.MatrizData) (count int) <span class="cov8" title="1">{
+        if (matrizData.Pos_i + CONSECUTIVOS) &lt;= matrizData.Tamano </span><span class="cov8" title="1">{
+                if matrizData.Matriz[matrizData.Pos_i][matrizData.Pos_j] == matrizData.Matriz[matrizData.Pos_i+1][matrizData.Pos_j] &amp;&amp;
+                        matrizData.Matriz[matrizData.Pos_i][matrizData.Pos_j] == matrizData.Matriz[matrizData.Pos_i+2][matrizData.Pos_j] &amp;&amp;
+                        matrizData.Matriz[matrizData.Pos_i][matrizData.Pos_j] == matrizData.Matriz[matrizData.Pos_i+3][matrizData.Pos_j] </span><span class="cov8" title="1">{
                         count++
                 }</span>
         }
@@ -150,9 +155,11 @@ func busq2() (count int) <span class="cov8" title="1">{
 
 //Busqueda en direccion derecha y abajo
 //Se realiza esta busqueda cuando en la posicion que estamos hay longitud suficiente
-func busq3() (count int) <span class="cov8" title="1">{
-        if (i+CONSECUTIVOS) &lt;= tam &amp;&amp; (j+CONSECUTIVOS) &lt;= tam </span><span class="cov8" title="1">{
-                if matriz[i][j] == matriz[i+1][j+1] &amp;&amp; matriz[i][j] == matriz[i+2][j+2] &amp;&amp; matriz[i][j] == matriz[i+3][j+3] </span><span class="cov0" title="0">{
+func busq3(matrizData structs.MatrizData) (count int) <span class="cov8" title="1">{
+        if (matrizData.Pos_i+CONSECUTIVOS) &lt;= matrizData.Tamano &amp;&amp; (matrizData.Pos_j+CONSECUTIVOS) &lt;= matrizData.Tamano </span><span class="cov8" title="1">{
+                if matrizData.Matriz[matrizData.Pos_i][matrizData.Pos_j] == matrizData.Matriz[matrizData.Pos_i+1][matrizData.Pos_j+1] &amp;&amp;
+                        matrizData.Matriz[matrizData.Pos_i][matrizData.Pos_j] == matrizData.Matriz[matrizData.Pos_i+2][matrizData.Pos_j+2] &amp;&amp;
+                        matrizData.Matriz[matrizData.Pos_i][matrizData.Pos_j] == matrizData.Matriz[matrizData.Pos_i+3][matrizData.Pos_j+3] </span><span class="cov8" title="1">{
                         count++
                 }</span>
         }
@@ -161,9 +168,11 @@ func busq3() (count int) <span class="cov8" title="1">{
 
 //Busqueda en direccion derecha y arriba
 //Se realiza esta busqueda cuando en la posicion que estamos hay longitud suficiente
-func busq4() (count int) <span class="cov8" title="1">{
-        if (i-CONSECUTIVOS+1) &gt;= 0 &amp;&amp; (j+CONSECUTIVOS) &lt;= tam </span><span class="cov8" title="1">{
-                if matriz[i][j] == matriz[i-1][j+1] &amp;&amp; matriz[i][j] == matriz[i-2][j+2] &amp;&amp; matriz[i][j] == matriz[i-3][j+3] </span><span class="cov0" title="0">{
+func busq4(matrizData structs.MatrizData) (count int) <span class="cov8" title="1">{
+        if (matrizData.Pos_i-CONSECUTIVOS+1) &gt;= 0 &amp;&amp; (matrizData.Pos_j+CONSECUTIVOS) &lt;= matrizData.Tamano </span><span class="cov8" title="1">{
+                if matrizData.Matriz[matrizData.Pos_i][matrizData.Pos_j] == matrizData.Matriz[matrizData.Pos_i-1][matrizData.Pos_j+1] &amp;&amp;
+                        matrizData.Matriz[matrizData.Pos_i][matrizData.Pos_j] == matrizData.Matriz[matrizData.Pos_i-2][matrizData.Pos_j+2] &amp;&amp;
+                        matrizData.Matriz[matrizData.Pos_i][matrizData.Pos_j] == matrizData.Matriz[matrizData.Pos_i-3][matrizData.Pos_j+3] </span><span class="cov8" title="1">{
                         count++
                 }</span>
         }
@@ -175,7 +184,7 @@ func busq4() (count int) <span class="cov8" title="1">{
 func IsDnaValid(dna []string) (msg string, result string) <span class="cov8" title="1">{
         //Validar que la cadena solo contenga los caracteres A,C,G,T
         var regex_dna = regexp.MustCompile("^([ACGT]*)$")
-        tam = len(dna)
+        var tam = len(dna)
         result = ""
         msg = ""
 

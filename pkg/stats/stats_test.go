@@ -81,6 +81,11 @@ func TestInsertDna(t *testing.T) {
 			ismutant: false,
 			err:      nil,
 		},
+		"Deberia retornar error por cadena no JSON": {
+			dna:      `{"dna":"ttttgA,"CTGCat","aCaTGT","TATAAc","CagCTA","cACTaA"]`,
+			ismutant: false,
+			err:      nil,
+		},
 	}
 
 	for name, test := range tests {
