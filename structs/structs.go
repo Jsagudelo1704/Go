@@ -41,3 +41,10 @@ type MongoConfiguration struct {
 	Database   string
 	Collection string
 }
+
+type MatrizData struct {
+	Matriz [][]string
+	Tamano int
+	Pos_i  int
+	Pos_j  int
+}

@@ -15,9 +15,9 @@ func ConnectDB(ctx context.Context, conf structs.MongoConfiguration) (*mongo.Cli
 
 	//conf := config.GetConfig()
 	//connection := options.Client().ApplyURI(conf.Mongo.Server)
-	//connection := options.Client().ApplyURI(conf.Server)
+	connection := options.Client().ApplyURI(conf.Server)
 
-	connection := options.Client().ApplyURI("mongodb+srv://mongoadmin:Juanito_1704@cluster0.cxpm1.mongodb.net/test")
+	//connection := options.Client().ApplyURI("mongodb+srv://mongoadmin:Juanito_1704@cluster0.cxpm1.mongodb.net/test")
 	client, err := mongo.Connect(ctx, connection)
 	if err != nil {
 		log.Fatal(err)
